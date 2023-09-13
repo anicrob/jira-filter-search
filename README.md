@@ -3,13 +3,14 @@
 
 ## Description
 
-Follow the set up directions in the Setup Instructions section to run this script. This script will allow you to find any dashboards or filters that inactive Jira users might own. This data is then exported into a CSV file.
+Follow the set up directions in the Setup Instructions section to run this script. This script will allow you to find any filters that contain a certain keyword (not in the title but within the filter jql itself). This data is then exported into a CSV file.
 
 ## Table of Contents
 * [Setup Instructions](#setup-instructions)
 * [Usage](#usage)
 * [Basic Auth](#basic-auth)
 * [Permissions](#permissions)
+* [Limitations](#limitations)
 * [Credits](#credits)
 
 
@@ -17,7 +18,7 @@ Follow the set up directions in the Setup Instructions section to run this scrip
 
 Here are the setup steps:
 
-1. Ensure you have Node.js downloaded: https://nodejs.org/en (note this link is for MacOS)
+1. Ensure you have Node.js downloaded: https://nodejs.org/en 
 
 Select the option on the left. 
 
@@ -39,11 +40,13 @@ Run the following command:
 touch .env
 ~~~
 
-Add two values to this file with the following titles:
+Add three values to this file with the following titles:
 
 API_KEY - see Basic Auth section on how to get this value; see permissions section to see which permissions this user needs
 
 URL - this is the Atlassian url instance (e.g. https://your-domain.atlassian.net)
+
+SEARCH_KEYWORD - this is the word you are searching for within the filter jql. Note that it is case sensitive. 
 
 ## Usage
 
@@ -75,7 +78,7 @@ echo -n user@example.com:api_token_string | base64
 
 ## Permissions 
 
-The only permissions needed for this script is the Browse users and groups global permission for the Get all Users REST API endpoint. No other permissions are needed, but please note that the dashboards and filters returned depend on the following:
+No specific permissions are needed for this script to work, but please note that the filters returned depend on the following:
 
 Only the following filters that match the query parameters are returned:
 
@@ -85,24 +88,22 @@ Only the following filters that match the query parameters are returned:
 - filters shared with a public project.
 - filters shared with the public. 
 
-The following dashboards that match the query parameters are returned:
+Therefore, this script cannot guarantee that ALL filters that meet the search criteria are returned, but any available based on the above limitations to the API endpoints. 
 
-- Dashboards owned by the user. Not returned for anonymous users.
-- Dashboards shared with a group that the user is a member of. Not returned for anonymous users.
-- Dashboards shared with a private project that the user can browse. Not returned for anonymous users.
-- Dashboards shared with a public project.
-- Dashboards shared with the public.
+## Limitations
 
-Therefore, this script cannot guarantee that ALL dashboards and filters owned by inactive users are returned, but any available based on the above limitations to the API endpoints. 
+The only limitations are the following:
+- filters are returned based off of permissions (see the Permissions section)
+- the search is case sensitive, so if 'done' was the keyword searched for, it won't find any filters with jql containing the word 'Done'
+- the amount of filters returned, but this can be fixed by adding on to the index array in helpers.js
 
 ## Credits
 
 This was created by anicrob. 
 
-Jira Cloud REST APIs Endpoints used: 
+Jira Cloud REST APIs Endpoint used: 
 - [Search for Filters](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-filters/#api-rest-api-3-filter-search-get)
-- [Search for Dashboards](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-dashboards/#api-rest-api-3-dashboard-search-get)
-- [Get all Users](https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-users/#api-rest-api-3-users-search-get)
+
 
 Used this [resource](https://www.geeksforgeeks.org/how-to-create-and-download-csv-file-in-javascript/) to help with creating the csv file.
 
