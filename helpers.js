@@ -9,7 +9,7 @@ const searchFilters = async () => {
     0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750,
     800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200, 1250, 1300, 1350, 1400,
     1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950, 2000,
-    2050, 2100, 2150, 2200, 
+    2050, 2100, 2150, 2200,
   ];
   await Promise.all(
     index.map(async (i) => {
@@ -64,48 +64,41 @@ const refineDetails = async (allFilterDetails) => {
 };
 
 const returnCSV = async (data) => {
-  if (data.length > 0) {
-    const csvRows = [];
-    //get the headers (properties) from the first object in the data array
-    const headers = Object.keys(data[0]);
-    //add the headers to the csvRows array, joined by a comma
-    csvRows.push(headers.join(","));
-    // Loop to get value of each object's key
-    for (const row of data) {
-      const values = headers.map((header) => {
-        const val = row[header];
-        return `"${val}"`;
-      });
+  const csvRows = [];
+  //get the headers (properties) from the first object in the data array
+  const headers = Object.keys(data[0]);
+  //add the headers to the csvRows array, joined by a comma
+  csvRows.push(headers.join(","));
+  // Loop to get value of each object's key
+  for (const row of data) {
+    const values = headers.map((header) => {
+      const val = row[header];
+      return `"${val}"`;
+    });
 
-      // To add, separator between each value
-      csvRows.push(values.join(","));
-    }
-
-    //To add new line for each object's value
-    const finalData = csvRows.join("\n");
-
-    // use fs.writeFile to create the .csv file
-    fs.writeFile(
-      `filters containing "${process.env.SEARCH_KEYWORD}".csv`,
-      finalData,
-      { encoding: "utf8" },
-      (err) => {
-        if (err) {
-          console.log(err);
-          return;
-        }
-      }
-    );
-
-    console.log(
-      `filters containing "${process.env.SEARCH_KEYWORD}".csv has been successfully created!`
-    );
-  } else {
-    console.log(
-      `there are no filters that contain the word, ${process.env.SEARCH_KEYWORD} in this instance`
-    );
-    return;
+    // To add, separator between each value
+    csvRows.push(values.join(","));
   }
+
+  //To add new line for each object's value
+  const finalData = csvRows.join("\n");
+
+  // use fs.writeFile to create the .csv file
+  fs.writeFile(
+    `filters containing "${process.env.SEARCH_KEYWORD}".csv`,
+    finalData,
+    { encoding: "utf8" },
+    (err) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+    }
+  );
+
+  console.log(
+    `filters containing "${process.env.SEARCH_KEYWORD}".csv has been successfully created!`
+  );
 };
 
 module.exports = {
