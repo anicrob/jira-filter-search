@@ -44,7 +44,6 @@ const searchFilters = async () => {
       }
     })
   );
-  console.log(filterDataMatch);
   return filterDataMatch;
 };
 
