@@ -48,6 +48,8 @@ URL - this is the Atlassian url instance (e.g. https://your-domain.atlassian.net
 
 SEARCH_KEYWORD - this is the word you are searching for within the filter jql. Note that it is case sensitive. 
 
+Note: you can use the .env.TEMPLATE file as a reference.
+
 ## Usage
 
 To use this script, run it by using the following command:
