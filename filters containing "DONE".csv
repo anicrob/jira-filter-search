@@ -1,0 +1,3 @@
+id,name,description,owner,viewUrl,searchUrl,jql
+"10010","Filter for AAJD board"," ","Stephen Laurin","https://pbsandbox.atlassian.net/issues/?filter=10010","https://pbsandbox.atlassian.net/rest/api/3/search?jql=project+%3D+AAJD+AND+status+in+(Done,+%22In+Progress%22,+%22To+Do%22)+ORDER+BY+Rank+ASC","project = AAJD AND status in (Done, "In Progress", "To Do") ORDER BY Rank ASC"
+"10020","TEST FILTER_Bulk Delete Enhanced Functions","Filter managed by ScriptRunner: statusCategory != Done","Marc Porto","https://pbsandbox.atlassian.net/issues/?filter=10020","https://pbsandbox.atlassian.net/rest/api/3/search?jql=statusCategory+!%3D+Done","statusCategory != Done"

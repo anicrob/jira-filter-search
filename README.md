@@ -46,7 +46,7 @@ API_KEY - see Basic Auth section on how to get this value; see permissions secti
 
 URL - this is the Atlassian url instance (e.g. https://your-domain.atlassian.net)
 
-SEARCH_KEYWORD - this is the word you are searching for within the filter jql. Note that it is case sensitive. 
+SEARCH_KEYWORD - this is the word you are searching for within the filter jql. It is no longer case sensitive.
 
 Note: you can use the .env.TEMPLATE file as a reference.
 
@@ -96,7 +96,6 @@ Therefore, this script cannot guarantee that ALL filters that meet the search cr
 
 The only limitations are the following:
 - filters are returned based off of permissions (see the Permissions section)
-- the search is case sensitive, so if 'done' was the keyword searched for, it won't find any filters with jql containing the word 'Done'
 - the amount of filters returned, but this can be fixed by adding on to the index array in helpers.js
 
 ## Credits

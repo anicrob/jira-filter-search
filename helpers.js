@@ -27,13 +27,13 @@ const searchFilters = async () => {
         let { values } = await response.json();
         if (values.length > 0) {
           values.map((filter) => {
-            if (!!filter.jql.includes(`${process.env.SEARCH_KEYWORD}`)) {
+            if (!!filter.jql.toLowerCase().includes(`${process.env.SEARCH_KEYWORD}`.toLowerCase())) {
               filterDataMatch.push(filter);
             }
           });
         } else if (values.length === 1) {
           console.log(values.jql);
-          if (!!values.jql.includes(`${process.env.SEARCH_KEYWORD}`)) {
+          if (!!values.jql.toLowerCase().includes(`${process.env.SEARCH_KEYWORD}`.toLowerCase())) {
             filterDataMatch.push(...values);
           }
           return;
@@ -55,9 +55,9 @@ const refineDetails = async (allFilterDetails) => {
       name,
       description: description ? description : " ",
       owner: owner.displayName,
-      jql,
       viewUrl,
       searchUrl,
+      jql,
     })
   );
   return refinedFilterDetails;
