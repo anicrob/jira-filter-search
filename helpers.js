@@ -5,53 +5,54 @@ require("dotenv").config();
 
 const filterDataMatch = [];
 const searchFilters = async () => {
-  const index = [
-    0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750,
-    800, 850, 900, 950, 1000, 1050, 1100, 1150, 1200, 1250, 1300, 1350, 1400,
-    1450, 1500, 1550, 1600, 1650, 1700, 1750, 1800, 1850, 1900, 1950, 2000,
-    2050, 2100, 2150, 2200, 2250, 2300, 2350, 2400, 2450, 2500,
-  ];
-  await Promise.all(
-    index.map(async (i) => {
-      try {
-        const response = await fetch(
-          `${process.env.URL}/rest/api/3/filter/search/?maxResults=50&startAt=${i}&expand=description,owner,jql,searchUrl,viewUrl`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Basic ${process.env.API_KEY}`,
-              Accept: "application/json",
-            },
-          }
-        );
-        let { values } = await response.json();
-        if (values.length > 0) {
-          values.map((filter) => {
-            if (
-              !!filter.jql
-                .toLowerCase()
-                .includes(`${process.env.SEARCH_KEYWORD}`.toLowerCase())
-            ) {
-              filterDataMatch.push(filter);
-            }
-          });
-        } else if (values.length === 1) {
+  let i = 0;
+  let isLast = false;
+  do {
+    try {
+      const response = await fetch(
+        `${process.env.URL}/rest/api/3/filter/search/?maxResults=50&startAt=${i}&expand=description,owner,jql,searchUrl,viewUrl`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Basic ${process.env.API_KEY}`,
+            Accept: "application/json",
+          },
+        }
+      );
+      let data = await response.json();
+      if (data.values.length > 0) {
+        data.values.map((filter) => {
           if (
-            !!values.jql
+            !!filter.jql
               .toLowerCase()
               .includes(`${process.env.SEARCH_KEYWORD}`.toLowerCase())
           ) {
-            filterDataMatch.push(...values);
+            filterDataMatch.push(filter);
           }
-          return;
-        } else {
-          return;
+        });
+      } else if (data.values.length === 1) {
+        if (
+          !!data.values.jql
+            .toLowerCase()
+            .includes(`${process.env.SEARCH_KEYWORD}`.toLowerCase())
+        ) {
+          filterDataMatch.push(...data.values);
         }
-      } catch (err) {
-        console.log(err);
+        return;
+      } else {
+        return;
       }
-    })
-  );
+      if (data.isLast) {
+        isLast = data.isLast;
+      } else {
+        isLast = false; 
+        i += 50
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  } while (isLast == false);
+
   return filterDataMatch;
 };
 
