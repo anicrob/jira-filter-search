@@ -10,7 +10,6 @@ Follow the set up directions in the Setup Instructions section to run this scrip
 * [Usage](#usage)
 * [Basic Auth](#basic-auth)
 * [Permissions](#permissions)
-* [Limitations](#limitations)
 * [Credits](#credits)
 
 
@@ -92,11 +91,6 @@ Only the following filters that match the query parameters are returned:
 
 Therefore, this script cannot guarantee that ALL filters that meet the search criteria are returned, but any available based on the above limitations to the API endpoints. 
 
-## Limitations
-
-The only limitations are the following:
-- filters are returned based off of permissions (see the Permissions section)
-- the amount of filters returned, but this can be fixed by adding on to the index array in helpers.js
 
 ## Credits
 
